@@ -1,5 +1,6 @@
 package com.daum.crw.schedule;
 
+import com.daum.crw.domain.Source;
 import com.daum.crw.dto.ArticleCate;
 import com.daum.crw.dto.SiteName;
 import com.daum.crw.exception.CrwErrorException;
@@ -56,12 +57,12 @@ public class ScheduleSocial implements SchedulerInterface {
                      * @throws CrwErrorException
                      */
 
-                    log.info("NAVER SOCIAL PAGING AREA schedule START =================================================================");
+                    log.info("DAUM SOCIAL PAGING AREA schedule START =================================================================");
                     long beforeTime = System.currentTimeMillis();
                     crwMain.startSocPageCrw();
                     long afterTime = System.currentTimeMillis();
                     log.info("SOCIAL 소요 시간  :: {} 초" , (afterTime - beforeTime)/1000 );
-                    log.info("NAVER SOCIAL PAGING AREA schedule END =================================================================");
+                    log.info("DAUM SOCIAL PAGING AREA schedule END =================================================================");
 
                 } catch (EmptySourceInfoException e) {
                     e.printStackTrace();
@@ -72,9 +73,15 @@ public class ScheduleSocial implements SchedulerInterface {
         }, new Trigger() {
             @Override
             public Date nextExecutionTime(TriggerContext triggerContext) {
-                String cron  = srcRepository.findBySiteNmAndArticleCategoryAndUseYn(SiteName.NAVER.toString(), ArticleCate.SOCIAL.toString(), "Y").getCrwCycle();
-                log.info("update HEADLINE cron value :: {}" , cron);
-                return new CronTrigger(cron).nextExecutionTime(triggerContext);
+                String cron = "* * * * * *";
+                Source src  = srcRepository.findBySiteNmAndArticleCategoryAndUseYn(SiteName.DAUM.name(), ArticleCate.SOCIAL.name(), "Y");
+                if(src != null){
+                    cron = src.getCrwCycle();
+                    log.info("update SOCIAL cron value :: {}" , cron);
+                    return new CronTrigger(cron).nextExecutionTime(triggerContext);
+                }else{
+                    return null;
+                }
             }
         });
     }

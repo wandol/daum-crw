@@ -25,4 +25,6 @@ public interface ContRepository extends JpaRepository<Contents,String> {
     int updatePostEndDt(@Param("pks") List<String> pks);
 
     Contents findFirstByArticlePkAndDelYn(String pk_v, String n);
+
+    Contents findFirstBySiteNmAndArticlePkAndDelYn(String sitem, String pk_v, String n);
 }

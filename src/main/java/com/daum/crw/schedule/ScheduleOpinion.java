@@ -1,5 +1,6 @@
 package com.daum.crw.schedule;
 
+import com.daum.crw.domain.Source;
 import com.daum.crw.dto.ArticleCate;
 import com.daum.crw.dto.SiteName;
 import com.daum.crw.exception.CrwErrorException;
@@ -54,12 +55,12 @@ public class ScheduleOpinion implements SchedulerInterface {
                      *  00:00 시에 시작하여 어제 날짜에 해당 하는 칼럼 수집.
                      */
 
-                    log.info("NAVER OPINION PAGING AREA schedule START =================================================================");
+                    log.info("DAUM OPINION PAGING AREA schedule START =================================================================");
                     long beforeTime = System.currentTimeMillis();
                     crwMain.startOpiPageCrw();
                     long afterTime = System.currentTimeMillis();
                     log.info("OPINION 소요 시간  :: {} 초" , (afterTime - beforeTime)/1000 );
-                    log.info("NAVER OPINION PAGING AREA schedule END =================================================================");
+                    log.info("DAUM OPINION PAGING AREA schedule END =================================================================");
 
                 } catch (EmptySourceInfoException e) {
                     e.printStackTrace();
@@ -70,9 +71,14 @@ public class ScheduleOpinion implements SchedulerInterface {
         }, new Trigger() {
             @Override
             public Date nextExecutionTime(TriggerContext triggerContext) {
-                String cron  = srcRepository.findBySiteNmAndArticleCategoryAndUseYn(SiteName.NAVER.toString(), ArticleCate.OPINION.toString(), "Y").getCrwCycle();
-                log.info("update HEADLINE cron value :: {}" , cron);
-                return new CronTrigger(cron).nextExecutionTime(triggerContext);
+                Source src  = srcRepository.findBySiteNmAndArticleCategoryAndUseYn(SiteName.DAUM.name(), ArticleCate.OPINION.name(), "Y");
+                if(src != null){
+                    String cron = src.getCrwCycle();
+                    log.info("update OPINION cron value :: {}" , cron);
+                    return new CronTrigger(cron).nextExecutionTime(triggerContext);
+                }else{
+                    return null;
+                }
             }
         });
     }

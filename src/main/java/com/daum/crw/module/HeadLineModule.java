@@ -65,37 +65,30 @@ public class HeadLineModule {
             wait = new WebDriverWait(driver, 5);
             wait.until(ExpectedConditions.presenceOfElementLocated(container));
 
-            //  뉴스 홈 헤드라인 첫번쨰 영역
             WebElement tap1 = driver.findElement(By.className("wrap_news"));
             wait.until(ExpectedConditions.visibilityOf(tap1));
-            List<WebElement> tap1_one = tap1.findElements(By.xpath(src.getHomeHeadlineImgLinkXpth()));
-            tap1_one.forEach(v -> result.add(v.getAttribute("href")));
-
-            List<WebElement> tap1_two = tap1.findElements(By.xpath(src.getHomeHeadlineListLinkXpth()));
-            tap1_two.forEach(v -> result.add(v.getAttribute("href")));
+            List<WebElement> tap1_one = tap1.findElements(By.xpath("//div[@class='news_prime news_tab1']/div/div/ul/li/a"));
+            tap1_one.forEach(v -> log.info("tap1_one :: {}" , v.getAttribute("href")));
+            List<WebElement> tap1_two = tap1.findElements(By.xpath("//div[@class='news_prime news_tab1']/div/ul/li/a"));
+            tap1_two.forEach(v -> log.info( "tap1_two :: {}" ,v.getAttribute("href")));;
 
             driver.findElement(By.id("mediaNextBtn")).click();
             Thread.sleep(1000);
 
-            //  뉴스 홈 헤드라인 두번쨰 영역
             WebElement tap2 = driver.findElement(By.className("wrap_news"));
             wait.until(ExpectedConditions.visibilityOf(tap2));
-
-            List<WebElement> tap2_one = tap1.findElements(By.xpath(src.getHomePoliticsImgLinkXpth()));
-            tap2_one.forEach(v -> result.add(v.getAttribute("href")));
-
-            List<WebElement> tap2_two = tap1.findElements(By.xpath(src.getHomePoliticsListLinkXpth()));
-            tap2_two.forEach(v -> result.add(v.getAttribute("href")));
+            List<WebElement> tap2_one = tap1.findElements(By.xpath("//div[@class='news_prime news_tab2']/div/div/ul/li/a"));
+            tap2_one.forEach(v -> log.info("tap2_one :: {}" , v.getAttribute("href")));
+            List<WebElement> tap2_two = tap1.findElements(By.xpath("//div[@class='news_prime news_tab2']/div/ul/li/a"));
+            tap2_two.forEach(v -> log.info( "tap2_two :: {}" ,v.getAttribute("href")));
 
             driver.findElement(By.id("mediaNextBtn")).click();
             Thread.sleep(1000);
 
-            //  뉴스 홈 헤드라인 세번쨰 영역
             WebElement tap3 = driver.findElement(By.className("wrap_news"));
             wait.until(ExpectedConditions.visibilityOf(tap2));
-
-            List<WebElement> tap3_one = tap1.findElements(By.xpath(src.getHomeSocialListLinkXpth()));
-            tap3_one.forEach(v -> result.add(v.getAttribute("href")));
+            List<WebElement> tap3_one = tap1.findElements(By.xpath("//div[@class='news_prime news_tab3']/div/div/ol/li/a"));
+            tap3_one.forEach(v -> log.info("tap3_one :: {}" , v.getAttribute("href")));
 
         } catch (Exception e) {
             e.printStackTrace();

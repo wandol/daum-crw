@@ -44,7 +44,7 @@ public class CrwMain {
         if (src == null) {
             throw new EmptySourceInfoException(" 수집원이 없습니다. ");
         }
-        log.info("DAUM HEADLINE SOURCE INFO :: {}" , src.toString());
+        log.info("DAUM HEADLINE SOURCE INFO :: {}" , src);
 
         //  TODO 다음 뉴스 홈 헤드라인,정치,사회 영역 link 수집
         List<String> newsHomHeadLineLinkList = headLineModule.getHeadLineLink(src);
@@ -119,7 +119,7 @@ public class CrwMain {
     }
 
     /**
-     *  오피니언 -> 속보  페이징 부분 수집 .
+     *  전체 칼럼. -> 속보  페이징 부분 수집 .
      *
      * @throws EmptySourceInfoException
      * @throws CrwErrorException

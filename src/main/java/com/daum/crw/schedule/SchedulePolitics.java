@@ -1,5 +1,6 @@
 package com.daum.crw.schedule;
 
+import com.daum.crw.domain.Source;
 import com.daum.crw.dto.ArticleCate;
 import com.daum.crw.dto.SiteName;
 import com.daum.crw.exception.CrwErrorException;
@@ -53,12 +54,12 @@ public class SchedulePolitics implements SchedulerInterface {
                      *  네이버 정치 홈 페이징 부분 하루치 기사 수집
                      *  00:00 시에 시작하여 목록 부분에 '1일전' 이라는 글씨를 만나기 전까지 수집.
                      */
-                    log.info("NAVER POLITICS PAGING AREA schedule START =================================================================");
+                    log.info("DAUM POLITICS PAGING AREA schedule START =================================================================");
                     long beforeTime = System.currentTimeMillis();
                     crwMain.startPolPageCrw();
                     long afterTime = System.currentTimeMillis();
                     log.info("POLITICS 소요 시간  :: {} 초" , (afterTime - beforeTime)/1000 );
-                    log.info("NAVER POLITICS PAGING AREA schedule END =================================================================");
+                    log.info("DAUM POLITICS PAGING AREA schedule END =================================================================");
                 } catch (EmptySourceInfoException e) {
                     e.printStackTrace();
                 } catch (CrwErrorException e) {
@@ -68,9 +69,15 @@ public class SchedulePolitics implements SchedulerInterface {
         }, new Trigger() {
             @Override
             public Date nextExecutionTime(TriggerContext triggerContext) {
-                String cron  = srcRepository.findBySiteNmAndArticleCategoryAndUseYn(SiteName.NAVER.toString(), ArticleCate.POLITICS.toString(), "Y").getCrwCycle();
-                log.info("update HEADLINE cron value :: {}" , cron);
-                return new CronTrigger(cron).nextExecutionTime(triggerContext);
+                String cron = "* * * * * *";
+                Source src  = srcRepository.findBySiteNmAndArticleCategoryAndUseYn(SiteName.DAUM.name(), ArticleCate.POLITICS.name(), "Y");
+                if(src != null){
+                    cron = src.getCrwCycle();
+                    log.info("update POLITICS cron value :: {}" , cron);
+                    return new CronTrigger(cron).nextExecutionTime(triggerContext);
+                }else{
+                    return null;
+                }
             }
         });
     }
