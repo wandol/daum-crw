@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SrcRepository extends JpaRepository<Source,String> {
 
-    Source findBySiteNmAndArticleCategoryAndUseYn(String toString, String pk_v, String n);
+    Source findBySiteNmAndArticleCategoryAndUseYn(String naver, String headline, String y);
+
 }

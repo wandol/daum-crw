@@ -24,5 +24,5 @@ public interface ContRepository extends JpaRepository<Contents,String> {
             + " WHERE article_pk NOT IN (:pks) and article_post_end_dt is null and  src_type = 'HOMEHEADLINE' ", nativeQuery = true)
     int updatePostEndDt(@Param("pks") List<String> pks);
 
-    Contents findFirstBySiteNmAndArticlePkAndDelYn(String sitem, String pk_v, String n);
+    Contents findFirstByArticlePkAndDelYn(String pk_v, String n);
 }
